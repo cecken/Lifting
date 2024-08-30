@@ -19,6 +19,7 @@
 // **T1**. It starts with **85% of 5RM** (or approximately **75% or 1RM**).
 // You can adjust your 1RM by clicking the **edit** icon, and setting the **1 Rep Max** value.
 // There's the RM calculator there to help find it out if you don't know it
+// Rounding should be 2x the smallest plate you have access to.
 
 // ! **T1**.
 
@@ -53,6 +54,7 @@ t1: Squat / 4x3, 1x3+ / 5x2, 1x2+ / 9x1, 1x1+ / 1x5 (5RM Test) / 160lb / progres
 // **T2**. Start with **65% of 5RM**.
 // You can adjust your 1RM by clicking the **edit** icon, and setting the **1 Rep Max** value.
 // There's the RM calculator there to help find it out if you don't know it
+// Rounding should be set to 2x the lowest plate you have access to
 
 // ! **T2**.
 t2: Bench Press / 3x10 / 3x8 / 3x6 / 87.5lb / progress: custom(stage1weight: 0lb, increase: 2.5lb, stage3increase: 10lb) {~
@@ -73,12 +75,25 @@ t2: Bench Press / 3x10 / 3x8 / 3x6 / 87.5lb / progress: custom(stage1weight: 0lb
 ~}
 
 // **T3**.
+// Weight progression here needs to be individualized to the workout equipment 
+// Leverage machines are dependent on the machines weight settings. 
+// Cable excercises follow an odd progression based on modulus due to uneven increments
 t3: Lat Pulldown, Leverage Machine / 2x15, 1x15+ / 75lb / 90s / progress: custom() {~
   if (completedReps[ns] >= 25) {
     weights = weights[ns] + 5lb
   }
 ~}
-t3: Cable Crunch / ...t3: Lat Pulldown, Leverage Machine[1] / 20lb / progress: custom() { ...t3: Lat Pulldown, Leverage Machine }
+t3: Cable Crunch / 2x15, 1x15+/ 10lb / progress: custom(step: 1) {~
+    if (completedReps[ns] >= 25) {
+        state.step += 1
+        if ((state.step % 3) == 0){
+          weights += 2
+        }
+        else {
+          weights += 1.5
+        }
+      }
+~}
 
 ## Day 2
 // **T1**. It starts with **85% of 5RM** (or approximately **75% or 1RM**).
@@ -107,7 +122,7 @@ t2: Deadlift / 3x10 / 3x8 / 3x6 / 125lb / progress: custom(stage1weight: 0lb, in
 
 // ...t3: Lat Pulldown[1]
 t3: Seated Row, Leverage Machine / ...t3: Lat Pulldown, Leverage Machine[1] / 45lb / progress: custom() { ...t3: Lat Pulldown, Leverage Machine }
-t3: Lateral Raise, Cable / ...t3: Lat Pulldown, Leverage Machine[1] / 7.5lb / progress: custom() { ...t3: Lat Pulldown, Leverage Machine }
+t3: Lateral Raise, Cable / ...t3: Lat Pulldown, Leverage Machine[1] / 4lb / progress: custom(step:0) { ...t3: Cable Crunch}
 
 ## Day 3
 // **T1**. It starts with **85% of 5RM** (or approximately **75% or 1RM**).
@@ -136,7 +151,7 @@ t2: Squat / 3x10 / 3x8 / 3x6 / 115lb / progress: custom(stage1weight: 0lb, incre
 
 // ...t3: Lat Pulldown[1]
 t3: Lat Pulldown, Leverage Machine / ...t3: Lat Pulldown, Leverage Machine[1]
-t3: Cable Crunch / ...t3: Lat Pulldown, Leverage Machine[1] / 20lb
+t3: Cable Crunch / ...t3: Cable Crunch[1] / 10lb
 
 ## Day 4
 // **T1**. It starts with **85% of 5RM** (or approximately **75% or 1RM**).
@@ -151,7 +166,7 @@ t3: Cable Crunch / ...t3: Lat Pulldown, Leverage Machine[1] / 20lb
 // * Repeat, when the bar starts to get heavy, make smaller jumps.
 // * When you finally get to a set that is hard, but you do it - take that number, long press **5RM Test** set, and set the weight you did
 // * Tap on the "New 5RM" set to mark it completed
-t1: Deadlift / 4x3, 1x3+ / ! 5x2, 1x2+ / 9x1, 1x1+ / 1x5 (5RM Test) / 75% / progress: custom(increase: 5lb) { ...t1: Squat }
+t1: Deadlift / 4x3, 1x3+ / 5x2, 1x2+ / 9x1, 1x1+ / 1x5 (5RM Test) / 75% / progress: custom(increase: 5lb) { ...t1: Squat }
 
 
 
@@ -165,7 +180,9 @@ t2: Overhead Press / 3x10 / ! 3x8 / 3x6 / 55% / progress: custom(stage1weight: 6
 
 // ...t3: Lat Pulldown[1]
 t3: Seated Row, Leverage Machine / ...t3: Lat Pulldown, Leverage Machine[1] / 45lb
-t3: Lateral Raise, Cable / ...t3: Lat Pulldown, Leverage Machine[1] / 7.5lb
+t3: Lateral Raise, Cable / ...t3: Cable Crunch[1] / 4lb
+
+
 
 
 
